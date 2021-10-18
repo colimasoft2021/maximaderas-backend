@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -r dotenv/config src/app.js --exec babel-node",
-    "dev": "nodemon -r dotenv/config src/app.js --exec babel-node",
+    "start": "node -r dotenv/config src/app.js --exec babel-node",
+    "start:dev": "nodemon -r dotenv/config src/app.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
