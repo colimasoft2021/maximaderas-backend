@@ -1,7 +1,5 @@
-import Users from '../models/users.model';
-
-let usersController = {
-  saveUser: async (req, res) => {
+const Users = require('../models/users.model');
+async function saveUser(req, res) {
     const body = req.body;
     try {
       const savedUser = await Users.create(body);
@@ -15,7 +13,8 @@ let usersController = {
           message: err
         });
     }
-  },
 };
 
-export default usersController;
+module.exports = {
+  saveUser
+};
