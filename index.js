@@ -6,7 +6,7 @@ const IP_SERVER = process.env.HOST;
 const PORT_DB = process.env.PORT_DB;
 
 mongoose.connect(
-  `mongodb://${IP_SERVER}:${PORT_DB}/agustinnavarrogaldon`,
+  `mongodb://${IP_SERVER}:${PORT_DB}/maximaderas`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {
