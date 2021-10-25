@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("../services/jwt");
 
 const saltRounds = 10;
+
 async function saveUser(req, res) {
   const data = req.body;
   console.log(data)
@@ -11,9 +12,12 @@ async function saveUser(req, res) {
     data.password = hash
     try {
       const savedUser =  Users.create(data);
-      res.status(201).json(savedUser);
+      res.send({
+        savedUser: savedUser,
+        status: 201
+      });
     } catch (err) {
-      res.status(500).json({
+      res.send({
         message: err,
       });
     }
@@ -26,7 +30,7 @@ function loginUser(req, res) {
   const email = params.email;
   const password = params.password;
 
- Users.findOne({ email }, (err, result) =>{
+  Users.findOne({ email }, (err, result) =>{
     if (err) {
       res.send({
         status: 500,

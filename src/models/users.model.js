@@ -10,6 +10,14 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  city: {
+    type: String,
+    required: true
+  },
+  postalCode: {
+    type: Number,
+    required: true
+  },
   email: {
     type: String,
     required: true,
@@ -18,10 +26,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
-  status: {
-    type: String,
-    required: true
-  },
+  }
 });
+
 module.exports = mongoose.model("Users", UserSchema);
