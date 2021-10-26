@@ -26,6 +26,14 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  status: {
+    type: String,
+    required: true
+  },
+  confirmationCode: {
+    type: String,
+    required: true
   }
 });
 
