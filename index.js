@@ -6,8 +6,8 @@ const IP_SERVER = process.env.HOST;
 const PORT_DB = process.env.PORT_DB;
 
 mongoose.connect(
-  `mongodb+srv://maximaderas_db:maximaderas_db@clustermaximaderas.4mxqv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
-  //`mongodb://${IP_SERVER}:${PORT_DB}/maximaderas`,
+  // `mongodb+srv://maximaderas_db:maximaderas_db@clustermaximaderas.4mxqv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  `mongodb://${IP_SERVER}:${PORT_DB}/maximaderas`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {

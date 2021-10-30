@@ -34,6 +34,10 @@ const UserSchema = new Schema({
   confirmationCode: {
     type: String,
     required: true
+  },
+  tokenPassword:{
+    type:String,
+    required:true
   }
 });
 
