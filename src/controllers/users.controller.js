@@ -265,7 +265,7 @@ async function SendEmailRecoveryPassword(correo, token){
 var mailOptions = {
   from: "Maderas Polanco <ventas@maderaspolanco.com>",
   to: correo,
-  subject: "Recuperación de contraseña",
+  subject: "Restablecer contraseña",
   html: contentHTML,
 };
 
