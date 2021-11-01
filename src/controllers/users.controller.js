@@ -106,8 +106,8 @@ function generateRandomString(length) {
 
 //FUNCIÓN PARA ENVIO DE CORREO DE CONFIRMACIÓN
 async function sendEmailConfirmation(correo, token) {
-	// const urlConfirmation = 'http://localhost:3977/api/verify-account-client?token=' + token;
-  const urlConfirmation = 'https://app-maximaderas.herokuapp.com/api/verify-account-client?token=' + token;
+	const urlConfirmation = 'http://localhost:3977/api/verify-account-client?token=' + token;
+  // const urlConfirmation = 'https://app-maximaderas.herokuapp.com/api/verify-account-client?token=' + token;
 	contentHTML = `
 		<head>
 			<meta charset="utf-8">
@@ -148,9 +148,9 @@ async function sendEmailConfirmation(correo, token) {
   console.log(correo);
 
 	var mailOptions = {
-		from: "Maderas Polanco <ventas@maderaspolanco.com>",
+		from: "Maximaderas <ventas@maderaspolanco.com>",
 		to: correo,
-		subject: "Registro en Maderas Polanco Shop",
+		subject: "Registro en Maximaderas",
 		html: contentHTML,
 	};
 
@@ -170,7 +170,7 @@ async function verifyToken(req, res) {
   const dataClient = await getClientByToken(token);
   console.log(dataClient);
   console.log(token);
-  if(dataClient){
+  if(dataClient) {
     const activate = await activateClient(dataClient.email);
     if(activate == 1) {
       res.send({status: 200, message: 'El usuario se ha activado'});
@@ -206,8 +206,49 @@ const activateClient = async function(email){
 }
 
 
+//FUNCIÓN PARA ENVIO DE CORREO DE CONTÁCTANOS
+async function sendContactUs(req, res) {
+
+  const { name, email, subject, messageSubject } = req.body.data;
+
+  const transporter = nodemailer.createTransport({
+    host: "mail.colimasoft.com",
+		port: 587,
+		secure: false,
+		auth: {
+			user: "isaac.carrillo@colimasoft.com",
+			pass: "colimasoft",
+		},
+		tls: {
+			rejectUnauthorized: false,
+		},
+  })
+
+  console.log(req);
+
+	const mailOptions = {
+		from:     email,
+		to:       `isaac.carrillo@colimasoft.com`,
+		subject:  `Plataforma Maximaderas: < ${subject} >`,
+		text:     `Nombre del usuario: ${name},\nAsunto: ${subject},\nMensaje: ${messageSubject}`,
+	};
+
+	transporter
+        .sendMail(mailOptions)
+        .then(() => {
+          res.send({status: 200, message: 'Correo enviado correctamente'});
+        })
+        .catch((error) => {
+          res.send({status: 404, message: error});
+        })
+
+}
+
+
+
 module.exports = {
   saveUser,
   loginUser,
-  verifyToken
+  verifyToken,
+  sendContactUs
 };

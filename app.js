@@ -22,4 +22,6 @@ app.use(cors())
 // });
 
 app.use('/api/', userRoutes);
+
+
 module.exports = app;
