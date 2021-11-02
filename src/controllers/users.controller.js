@@ -309,7 +309,7 @@ async function UpdatePassword (req, res){
   })
 }
 
-
+//for test
 module.exports = {
   saveUser,
   loginUser,
