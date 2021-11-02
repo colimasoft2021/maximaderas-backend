@@ -205,7 +205,109 @@ const activateClient = async function(email){
   .catch(err => {return 'error';})
 }
 
+async function getPassword(req, res){
+  console.log(req.body.data)
+  const token = generateRandomString(10);
+  const {email} = req.body.data
 
+  Users.findOne({email: email}, (err, result) =>{
+    if(result){
+      Users.findOneAndUpdate({email:email}, {tokenPassword: token},{returnNewDocument:true})
+      .then(updatedDocument =>{
+        if(updatedDocument){
+          SendEmailRecoveryPassword(email, token)
+          res.send({status:200, message:'Correo de recuperacion de contraseña enviado'})
+        }else{
+          res.send({status:404, message:'No enviado'})
+        }
+      })
+    }
+  }
+  )
+}
+
+
+async function SendEmailRecoveryPassword(correo, token){
+
+
+  const urlRestablecimiento = 'http://localhost:3000/clave-nueva?token=' + token;
+
+  console.log(correo)
+  console.log(token)
+  
+  contentHTML = `
+  <head>
+    <meta charset="utf-8">
+    <Style>
+      div {
+        text-align: center;
+      }
+      img {
+        display: block;
+          margin-left: auto;
+          margin-right: auto;
+      }
+    </Style>
+  </head>
+  <body>
+    <div>
+      <h1>Hola </h1>
+      <h3>Estas recibiendo este correo debido a que se hizo una solicitud de restablecimiento de contraseña para tu cuenta.</h3>
+      <h3>A contiuación da click en el siguiente enlance para restablecer su contraseña ${urlRestablecimiento}</h3>
+      <h3>Si tú no te registraste en Maderas Polanco Online escribe un mensaje a la dirección de correo ventas@maderaspolanco.com para que den de baja la cuenta.</h3>
+      <img class="imagen" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTT5esbtreE-4WDrqmo9jJEQ5KWAhJlmmM1MA&usqp=CAU" alt="Maderas Polanco">
+    </div>
+  </body>
+`;
+
+var mailOptions = {
+  from: "Maderas Polanco <ventas@maderaspolanco.com>",
+  to: correo,
+  subject: "Restablecer contraseña",
+  html: contentHTML,
+};
+
+var transporter = nodemailer.createTransport({
+  host: "mail.colimasoft.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "isaac.carrillo@colimasoft.com",
+    pass: "colimasoft",
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+transporter.sendMail(mailOptions, function (error, info) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("Correo enviado: " + info.response);
+  }
+});
+  
+}
+
+async function UpdatePassword (req, res){
+  const body = req.body.data;
+  const {token, password} = body
+  console.log(body)
+  
+  bcrypt.hash(password, saltRounds, async function (err, hash) {
+     Users.findOneAndUpdate({tokenPassword: token}, {password: hash},{returnNewDocument:true})
+    .then(updatedDocument =>{
+      if(updatedDocument){
+        res.send({status:200, message:'recuperacion de contraseña hecha'})
+      }else{
+        res.send({status:404, message:'No enviado'})
+      }
+    }) 
+  })
+}
+
+//for test
 module.exports = {
   saveUser,
   loginUser,
