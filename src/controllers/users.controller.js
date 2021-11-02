@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require("../services/jwt");
 const nodemailer = require("nodemailer");
 const { get } = require("mongoose");
-const { token } = require("morgan");
-const { updateOne } = require("../models/users.model");
 
 const saltRounds = 10;
 
@@ -313,7 +311,5 @@ async function UpdatePassword (req, res){
 module.exports = {
   saveUser,
   loginUser,
-  verifyToken,
-  getPassword,
-  UpdatePassword, 
+  verifyToken
 };
